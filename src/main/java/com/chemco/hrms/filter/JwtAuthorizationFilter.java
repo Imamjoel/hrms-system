@@ -32,7 +32,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 httpServletResponse.setStatus(OK.value());
         } else {
                 String authorizationHeader = httpServletRequest.getHeader(AUTHORIZATION);
-                if (authorizationHeader == null || authorizationHeader.startsWith(TOKEN_PREFIX)) {
+                if (authorizationHeader == null || !authorizationHeader.startsWith(TOKEN_PREFIX)) {
                     filterChain.doFilter(httpServletRequest, httpServletResponse);
                     return;
                 }
