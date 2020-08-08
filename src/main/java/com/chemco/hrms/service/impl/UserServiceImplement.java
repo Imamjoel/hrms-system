@@ -44,7 +44,7 @@ import static org.springframework.http.MediaType.*;
 
 @Service
 @Transactional
-@Qualifier("UserDetailsService")
+@Qualifier("userDetailsService")
 public class UserServiceImplement implements UserService, UserDetailsService {
     private Logger LOGGER =  LoggerFactory.getLogger(getClass());
     private UserRepository userRepository;
@@ -53,10 +53,12 @@ public class UserServiceImplement implements UserService, UserDetailsService {
     private EmailService emailService;
 
     @Autowired
-    public UserServiceImplement(UserRepository userRepository) {
+    public UserServiceImplement(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, LoginAttemptService loginAttemptService, EmailService emailService) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.loginAttemptService = loginAttemptService;
+        this.emailService = emailService;
     }
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Users users = userRepository.findUserByUsername(username);
@@ -76,7 +78,7 @@ public class UserServiceImplement implements UserService, UserDetailsService {
 
     @Override
     public Users register(String firstName, String lastName, String username, String email) throws UserNotFoundException, UsernameExistException, EmailExistException, MessagingException {
-        validateNewUsernameAndEmail(EMPTY, username, email);
+    //    validateNewUsernameAndEmail(EMPTY, username, email);
         Users user = new Users();
         user.setUserId(generateUserId());
         String password = generatePassword();
@@ -93,7 +95,7 @@ public class UserServiceImplement implements UserService, UserDetailsService {
         user.setProfileImageUrl(getTemporaryProfileImageUrl(username));
         userRepository.save(user);
         LOGGER.info("New user password: " + password);
-        emailService.sendNewPasswordEmail(firstName, password, email);
+       // emailService.sendNewPasswordEmail(firstName, password, email);
         return user;
     }
 
@@ -146,7 +148,7 @@ public class UserServiceImplement implements UserService, UserDetailsService {
         user.setPassword(encodePassword(password));
         userRepository.save(user);
         LOGGER.info("New user password: " + password);
-        emailService.sendNewPasswordEmail(user.getFirstName(), password, user.getEmail());
+  //      emailService.sendNewPasswordEmail(user.getFirstName(), password, user.getEmail());
     }
 
     @Override

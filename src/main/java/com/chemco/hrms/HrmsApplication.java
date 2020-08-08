@@ -5,11 +5,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.io.File;
+import static com.chemco.hrms.constant.FileConstant.USER_FOLDER;
+
 @SpringBootApplication
 public class HrmsApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(HrmsApplication.class, args);
+		new File(USER_FOLDER).mkdirs();
 	}
 
 	@Bean
