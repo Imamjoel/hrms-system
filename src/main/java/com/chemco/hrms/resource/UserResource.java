@@ -60,7 +60,7 @@ public class UserResource extends ExceptionGlobalHandling {
     }
 
     @PostMapping("/register")
-    @PreAuthorize("hasAnyAuthority('user:create')")
+   // @PreAuthorize("hasAnyAuthority('user:create')")
     public ResponseEntity<Users> register(@RequestBody Users user) throws UserNotFoundException, UsernameExistException, EmailExistException, MessagingException {
         Users newUser = userService.register(user.getFirstName(), user.getLastName(), user.getUsername(), user.getEmail());
         return new ResponseEntity<>(newUser, OK);
